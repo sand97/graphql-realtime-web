@@ -1,21 +1,15 @@
 import {useSnackbar} from "notistack";
-import React, {useState} from "react";
+import React from "react";
 import {UserContext, UserContextType} from "contexts/UserContext";
 import {useHistory} from "react-router";
 import {useTranslation} from "react-i18next";
-import {User} from "./auth_types";
 import {LazyQueryExecFunction, OperationVariables, useLazyQuery} from "@apollo/client";
 import {LOGIN_QUERY} from "../../../services/graphql/auth";
-
-
-
-
-type LoginPasswordType = (variables: {email: string, password: string}) => void
 
 type UsePasswordLoginUser = () => [LazyQueryExecFunction<any, OperationVariables>, boolean]
 
 
-export const usePasswordLoginUser: UsePasswordLoginUser = () => {
+export const usePasswordLoginUser = () => {
     const history = useHistory();
     const {login} = React.useContext(UserContext) as UserContextType
     const {t} = useTranslation();
@@ -40,7 +34,7 @@ export const usePasswordLoginUser: UsePasswordLoginUser = () => {
     const {enqueueSnackbar} = useSnackbar();
 
 
-    return [handleLogin, loading]
+    return [handleLogin, loading] as const
 }
 
 //

@@ -1,13 +1,13 @@
 import React, {useState, useMemo} from "react";
 import SecureLS from 'secure-ls';
-import {User} from "../views/auth/logic/auth_types";
+import {LoginResponse} from "__generated__/graphql";
 
 const ls = new SecureLS({encodingType: 'aes'});
 
 export interface UserContextType {
     auth?: {
         token: string
-        user: User
+        user: LoginResponse['user']
     }
     login: (auth: UserContextType['auth']) => void
     logout: () => void

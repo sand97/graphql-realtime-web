@@ -88,7 +88,7 @@ const LoginPage = () => {
                     <Formik
                         initialValues={initialValue}
                         validationSchema={Yup.object().shape(validations)}
-                        onSubmit={variables => handleLogin({variables})}>
+                        onSubmit={handleLogin}>
                         {({
                               setFieldTouched,
                               handleSubmit,

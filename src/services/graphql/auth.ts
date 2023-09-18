@@ -1,13 +1,15 @@
-import { gql } from '@apollo/client';
+import { gql } from '__generated__/gql';
 
-export const LOGIN_QUERY = gql`
-    query LOGIN_QUERY($email: String!, $password: String!) {
+export const LOGIN_QUERY = gql(/* GraphQL */ `
+  query login($email: String!, $password: String!) {
       login(loginInput: { email:$email, password: $password }) {
         Authorization,
         user {
-          name
-          surname
-          email
+            id
+            name
+            surname
+            email
+            avatar
         }
       }
-}`
+}`)

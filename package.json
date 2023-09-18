@@ -33,23 +33,28 @@
     "react-scripts": "5.0.1",
     "react-svg": "^16.1.24",
     "secure-ls": "^1.2.6",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@svgr/webpack": "^6.5.1",
     "@types/react-helmet": "^6.1.4",
     "@types/react-router": "^5.1.17",
     "@types/react-router-config": "^5.0.3",
-    "@types/react-router-dom": "^5.3.1"
+    "@types/react-router-dom": "^5.3.1",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "start": "PORT=3006 craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "compile": "graphql-codegen",
+    "watch": "graphql-codegen -w"
   },
   "eslintConfig": {
     "extends": [
