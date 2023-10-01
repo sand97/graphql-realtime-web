@@ -3,10 +3,8 @@ import React from "react";
 import {UserContext, UserContextType} from "contexts/UserContext";
 import {useHistory} from "react-router";
 import {useTranslation} from "react-i18next";
-import {LazyQueryExecFunction, OperationVariables, useLazyQuery} from "@apollo/client";
+import {useLazyQuery} from "@apollo/client";
 import {LOGIN_QUERY} from "../../../services/graphql/auth";
-
-type UsePasswordLoginUser = () => [LazyQueryExecFunction<any, OperationVariables>, boolean]
 
 
 export const usePasswordLoginUser = () => {
@@ -22,7 +20,6 @@ export const usePasswordLoginUser = () => {
             })
         },
         onCompleted: (data) => {
-            console.log("data", data);
             let {login: {user, Authorization}} = data;
             login({
                 user,
