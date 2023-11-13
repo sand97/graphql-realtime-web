@@ -1,4 +1,6 @@
 import fr from './fr';
 import en from './en';
 
-export default { en: en, fr: fr };
+const locales = { en: en, fr: fr };
+
+export default locales;

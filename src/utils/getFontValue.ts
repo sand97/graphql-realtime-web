@@ -1,6 +1,3 @@
-import {useTheme} from '@mui/material/styles';
-import useResponsive from '../hooks/useResponsive';
-
 // ----------------------------------------------------------------------
 
 export function remToPx(value: string) {
@@ -11,7 +8,7 @@ export function pxToRem(value: number) {
   return `${value / 16}rem`;
 }
 
-export function responsiveFontSizes({sm, md, lg}: any) {
+export function responsiveFontSizes({ sm, md, lg }: any) {
   return {
     '@media (min-width:600px)': {
       fontSize: pxToRem(sm),
@@ -24,4 +21,3 @@ export function responsiveFontSizes({sm, md, lg}: any) {
     },
   };
 }
-

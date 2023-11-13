@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
-import {AppBar, Toolbar} from '@mui/material';
-import {Logo} from 'components';
+import { AppBar, Toolbar } from '@mui/material';
+import { Logo } from 'components';
 import styles from './Topbar.module.css';
 
 const Topbar = () => {
@@ -10,7 +10,7 @@ const Topbar = () => {
     <AppBar className={clsx(styles.root)} color="primary">
       <Toolbar>
         <RouterLink to="/">
-          <Logo/>
+          <Logo />
         </RouterLink>
       </Toolbar>
     </AppBar>

@@ -1,9 +1,8 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import SecureLS from 'secure-ls';
 
 const ls = new SecureLS({ encodingType: 'aes' });
-
 
 function AuthGuard(props: any) {
   const { children } = props;
@@ -19,4 +18,3 @@ function AuthGuard(props: any) {
 }
 
 export default AuthGuard;
-

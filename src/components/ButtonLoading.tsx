@@ -1,19 +1,19 @@
 import React, { forwardRef } from 'react';
 import clsx from 'clsx';
-import {makeStyles} from "@mui/styles";
-import {Button, ButtonProps, CircularProgress} from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    position: 'relative'
+    position: 'relative',
   },
   buttonProgress: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     marginTop: -12,
-    marginLeft: -12
-  }
+    marginLeft: -12,
+  },
 }));
 
 export interface ButtonPrimaryProps extends ButtonProps {
@@ -29,7 +29,8 @@ const ButtonLoading = forwardRef<any, ButtonPrimaryProps>((props, ref) => {
       ref={ref}
       className={clsx(props.className, classes.wrapper)}
       disabled={disabled || loading}
-      {...rest}>
+      {...rest}
+    >
       {props.children}
       {loading && (
         <CircularProgress size={24} className={classes.buttonProgress} />

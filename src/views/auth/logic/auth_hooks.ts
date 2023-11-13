@@ -1,38 +1,41 @@
-import {useSnackbar} from "notistack";
-import React from "react";
-import {UserContext, UserContextType} from "contexts/UserContext";
-import {useHistory} from "react-router";
-import {useTranslation} from "react-i18next";
-import {useLazyQuery} from "@apollo/client";
-import {LOGIN_QUERY} from "../../../services/graphql/auth";
-
+import { useSnackbar } from 'notistack';
+import React from 'react';
+import { UserContext, UserContextType } from 'contexts/UserContext';
+import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { useLazyQuery } from '@apollo/client';
+import { LOGIN_QUERY } from 'services/graphql/auth';
 
 export const usePasswordLoginUser = () => {
-    const history = useHistory();
-    const {login} = React.useContext(UserContext) as UserContextType
-    const {t} = useTranslation();
+  const history = useHistory();
+  const { login } = React.useContext(UserContext) as UserContextType;
+  const { t } = useTranslation();
 
-    const [handleLogin, {loading}] = useLazyQuery(LOGIN_QUERY, {
-        fetchPolicy: "no-cache",
-        onError: (err) => {
-            enqueueSnackbar(err.message ?? `${t('shared.internet_connexion_error')}`, {
-                variant: 'error'
-            })
+  const [handleLogin, { loading }] = useLazyQuery(LOGIN_QUERY, {
+    fetchPolicy: 'no-cache',
+    onError: (err) => {
+      enqueueSnackbar(
+        err.message ?? `${t('shared.internet_connexion_error')}`,
+        {
+          variant: 'error',
         },
-        onCompleted: (data) => {
-            let {login: {user, Authorization}} = data;
-            login({
-                user,
-                token: Authorization
-            });
-            history.push('/');
-        }
-    });
-    const {enqueueSnackbar} = useSnackbar();
+      );
+    },
+    onCompleted: (data) => {
+      let {
+        login: { user, Authorization },
+      } = data;
+      login({
+        user,
+        token: Authorization,
+      });
+      history.push('/');
+    },
+  });
+  const { enqueueSnackbar } = useSnackbar();
 
-
-    return [handleLogin, loading] as const
-}
+  return [handleLogin, loading] as const;
+};
 
 //
 // type UpdateProfileType = (payload: Partial<User>) => void

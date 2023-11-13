@@ -1,24 +1,28 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import SecureLS from "secure-ls";
-const ls = new SecureLS({encodingType: 'aes'});
+import SecureLS from 'secure-ls';
+const ls = new SecureLS({ encodingType: 'aes' });
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:3008/graphql',
+  uri: 'http://localhost:3008/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    const token = ls.get('user');
-    // return the headers to the context so httpLink can read them
-    return {
-        headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : "",
-        }
-    }
+  // get the authentication token from local storage if it exists
+  const token = ls.get('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+export const cache = new InMemoryCache({
+  addTypename: true,
+  typePolicies: {},
 });
 export const apolloClient = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+  cache,
 });

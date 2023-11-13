@@ -1,11 +1,11 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable react/display-name */
-import React, {Fragment, lazy, Suspense} from 'react';
+import React, { Fragment, lazy, Suspense } from 'react';
 import AuthLayout from 'layouts/Auth';
 import ApplicationLayout from 'layouts/Application';
-import {RouteConfig} from 'react-router-config';
-import {Redirect, Route, Switch} from 'react-router-dom';
-import {LoadingScreen} from 'components';
+import { RouteConfig } from 'react-router-config';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { LoadingScreen } from 'components';
 import AuthGuard from './AuthGuard';
 import GuestGuard from './GuestGuard';
 
@@ -20,17 +20,16 @@ const routesConfig: RouteConfig[] = [
     layout: AuthLayout,
     guard: GuestGuard,
     routes: [
-
       {
         path: '/auth/login',
         exact: true,
-        component: lazy(() => import('views/auth/Login.page'))
+        component: lazy(() => import('views/auth/Login.page')),
       },
       {
         path: '*',
-        component: () => <Redirect to="/errors/error-404"/>
-      }
-    ]
+        component: () => <Redirect to="/errors/error-404" />,
+      },
+    ],
   },
   {
     path: '/',
@@ -45,29 +44,29 @@ const routesConfig: RouteConfig[] = [
       {
         path: '/',
         exact: true,
-        component: lazy(() => import('views/medecines/Medicine.page')),
+        component: lazy(() => import('views/medicaments/Medicine.page')),
       },
       {
-        path: '/app/profile',
+        path: '/categories',
         exact: true,
-        component: lazy(() => import('views/auth/Profil.page'))
+        component: lazy(() => import('views/categories/Categories.page')),
       },
 
       {
         path: '*',
-        component: () => <Redirect to="/app/error-404"/>
-      }
-    ]
+        component: () => <Redirect to="/app/error-404" />,
+      },
+    ],
   },
   {
     path: '*',
-    component: () => <Redirect to="/app/error-404"/>
-  }
+    component: () => <Redirect to="/app/error-404" />,
+  },
 ];
 
 const renderRoutes = (routes: RouteConfig[]) =>
   routes ? (
-    <Suspense fallback={<LoadingScreen isDashboard/>}>
+    <Suspense fallback={<LoadingScreen isDashboard />}>
       <Switch>
         {routes.map((route, i) => {
           const Guard = route.guard || Fragment;

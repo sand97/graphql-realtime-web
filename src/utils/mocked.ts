@@ -8,7 +8,7 @@ export default (status: number, data: any, resolve_time: number = 500) =>
             setTimeout(() => {
               resolve(data);
             }, resolve_time / 2);
-          })
+          }),
       });
     }, resolve_time / 2);
   });

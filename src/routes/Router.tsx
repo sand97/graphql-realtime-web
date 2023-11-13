@@ -1,34 +1,26 @@
 // @flow
 import * as React from 'react';
 import SecureLS from 'secure-ls';
-import {useEffect} from "react";
-import {Redirect} from "react-router-dom";
-import {User} from "../views/auth/logic/auth_types";
+import { Redirect } from 'react-router-dom';
+import { User } from '../views/auth/logic/auth_types';
 const ls = new SecureLS({ encodingType: 'aes' });
 
-
-type Props = {
-
-};
+type Props = {};
 const Router = (props: Props) => {
+  let token: string | undefined, user: User | undefined;
 
+  try {
+    token = !!ls.get('token') ? ls.get('token') : undefined;
+    user = !!ls.get('user') ? ls.get('user') : undefined;
+  } catch (error) {}
 
+  let route = '/auth/login';
 
-    let token: string | undefined, user: User | undefined;
+  if (token && user) {
+    route = '/';
+  }
 
-    try {
-        token = !!ls.get('token') ? ls.get('token') : undefined;
-        user = !!ls.get('user') ? ls.get('user') : undefined;
-    } catch (error) {}
-
-    let route = '/auth/login'
-
-    if (token && user) {
-        route = '/'
-    }
-
-    return <Redirect to={route}/>;
-
+  return <Redirect to={route} />;
 };
 
-export default Router
+export default Router;

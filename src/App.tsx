@@ -1,42 +1,51 @@
 import React from 'react';
 import './App.css';
-import {apolloClient} from "./services/graphql";
-import {ApolloProvider} from "@apollo/client";
-import {SnackbarProvider} from "notistack";
+import { apolloClient } from './services/graphql';
+import { ApolloProvider } from '@apollo/client';
+import { SnackbarProvider } from 'notistack';
 import SnackbarCloseButton from 'components/SnackbarCloseButton';
-import ThemeProvider from "theme";
-import CssBaseline from "@mui/material/CssBaseline";
-import Routes from "routes";
-import "translations"
-import Auth from "routes/Auth";
-import {ProgressBarStyle} from "components/ProgressBar";
+import ThemeProvider from 'theme';
+import CssBaseline from '@mui/material/CssBaseline';
+import Routes from 'routes';
+import 'translations';
+import Auth from 'routes/Auth';
+import { ProgressBarStyle } from 'components/ProgressBar';
 import ScrollToTop from 'components/ScrollToTop';
-import {UserContextProvider} from "./contexts/UserContext";
+import { UserContextProvider } from './contexts/UserContext';
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+const __DEV__ = process.env.NODE_ENV !== 'production';
 
+if (__DEV__) {
+  // Adds messages only in a dev environment
+  loadDevMessages();
+  loadErrorMessages();
+}
 function App() {
   return (
-      <ApolloProvider client={apolloClient}>
-
+    <ApolloProvider client={apolloClient}>
       <SnackbarProvider
-          action={snackbarKey => <SnackbarCloseButton snackbarKey={snackbarKey}/>}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}>
+        action={(snackbarKey) => (
+          <SnackbarCloseButton snackbarKey={snackbarKey} />
+        )}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
         <ThemeProvider>
-            <UserContextProvider>
-                <React.Fragment>
-                    <CssBaseline/>
-                    <ProgressBarStyle/>
-                    <ScrollToTop/>
-                    <Auth>
-                        <Routes/>
-                    </Auth>
-                </React.Fragment>
-            </UserContextProvider>
+          <UserContextProvider>
+            <React.Fragment>
+              <CssBaseline />
+              <ProgressBarStyle />
+              <ScrollToTop />
+              <Auth>
+                <Routes />
+              </Auth>
+            </React.Fragment>
+          </UserContextProvider>
         </ThemeProvider>
       </SnackbarProvider>
-      </ApolloProvider>
+    </ApolloProvider>
   );
 }
 

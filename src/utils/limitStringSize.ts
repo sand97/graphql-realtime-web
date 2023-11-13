@@ -1,7 +1,10 @@
-export default function limitStringSize(str: string, maxLength: number): string {
-    if (str.length <= maxLength) {
-        return str;
-    }
+export default function limitStringSize(
+  str: string,
+  maxLength: number,
+): string {
+  if (str.length <= maxLength) {
+    return str;
+  }
 
-    return str.substring(0, maxLength) + '...';
+  return str.substring(0, maxLength) + '...';
 }
