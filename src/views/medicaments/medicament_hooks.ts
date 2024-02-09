@@ -73,7 +73,6 @@ export const useCreateMedicament = () => {
       );
     },
     update(cache, { data: result }) {
-      console.log('result', result);
       setLoading(false);
       if (!result?.createMedicament) return;
       cache.updateQuery(

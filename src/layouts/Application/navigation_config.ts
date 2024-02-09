@@ -18,11 +18,11 @@ const navigation_config: Menu[] = [
     href: '/',
     icon: StoreIcon,
   },
-  {
-    title: 'navigation_config_orders',
-    href: '/orders',
-    icon: SupervisionIcon,
-  },
+  // {
+  //   title: 'navigation_config_orders',
+  //   href: '/orders',
+  //   icon: SupervisionIcon,
+  // },
   {
     title: 'navigation_config_categories',
     href: '/categories',

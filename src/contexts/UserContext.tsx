@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, PropsWithChildren } from 'react';
 import SecureLS from 'secure-ls';
 import { LoginQuery, LoginResponse } from '__generated__/graphql';
 
@@ -16,10 +16,10 @@ export interface UserContextType {
 export const UserContext = React.createContext<UserContextType | null>(null);
 
 interface UserContextProviderProps {
-  children: React.ReactNode;
+  children: React.ReactNode | Element;
 }
 
-export const UserContextProvider = ({ children }: UserContextProviderProps) => {
+export const UserContextProvider = ({ children }: PropsWithChildren) => {
   const user = useMemo(() => {
     try {
       return !!ls.get('user') ? ls.get('user') : undefined;
@@ -36,7 +36,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
   }, []);
 
-  let initialAuth = user && token ? { user, token } : undefined;
+  const initialAuth = user && token ? { user, token } : undefined;
 
   const [auth, setAuth] = useState<UserContextType['auth']>(initialAuth);
 

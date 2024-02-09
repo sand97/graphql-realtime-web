@@ -51,6 +51,11 @@ const routesConfig: RouteConfig[] = [
         exact: true,
         component: lazy(() => import('views/categories/Categories.page')),
       },
+      {
+        path: '/users',
+        exact: true,
+        component: lazy(() => import('views/users/Users.page')),
+      },
 
       {
         path: '*',

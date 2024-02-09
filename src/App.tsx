@@ -8,11 +8,11 @@ import ThemeProvider from 'theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import Routes from 'routes';
 import 'translations';
-import Auth from 'routes/Auth';
 import { ProgressBarStyle } from 'components/ProgressBar';
 import ScrollToTop from 'components/ScrollToTop';
 import { UserContextProvider } from './contexts/UserContext';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
 if (__DEV__) {
@@ -20,6 +20,7 @@ if (__DEV__) {
   loadDevMessages();
   loadErrorMessages();
 }
+
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
@@ -32,18 +33,17 @@ function App() {
           horizontal: 'right',
         }}
       >
-        <ThemeProvider>
+        <React.Fragment>
+          <CssBaseline />
+          <ProgressBarStyle />
           <UserContextProvider>
-            <React.Fragment>
-              <CssBaseline />
-              <ProgressBarStyle />
-              <ScrollToTop />
-              <Auth>
-                <Routes />
-              </Auth>
-            </React.Fragment>
+            <ScrollToTop />
+            <ThemeProvider>
+              {/* @ts-ignore*/}
+              <Routes />
+            </ThemeProvider>
           </UserContextProvider>
-        </ThemeProvider>
+        </React.Fragment>
       </SnackbarProvider>
     </ApolloProvider>
   );

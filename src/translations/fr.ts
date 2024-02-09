@@ -70,12 +70,21 @@ const fr = {
     category_update_title: 'Modifier la catégorie',
     medicaments_empty: 'Aucun médicament disponible',
     medicament_add_title: 'Ajouter un médicament',
+    user_add_title: 'Ajouter un utilisateur',
+    user_update_title: 'Modifier un utilisateur',
+    user_name: 'Nom',
+    user_surname: 'Prénom',
+    user_email: 'Email',
+    user_password: 'Mot de passe',
+    user_phone: 'Téléphone',
     browser_one_file: 'Veuillez sélectionner un fichier',
     add_medicament_dialog_title: 'Ajouter un médicament',
     update_medicament_dialog_title: 'Modifier un médicament',
     global_price_unit: 'Prix unitaire',
     delete_medicament_conf:
       'Souhaitez-vous vraiment supprimer le médicament {{name}} ?',
+    delete_user_conf:
+      'Souhaitez-vous vraiment supprimer l\'utilisateur {{name}} ?',
   },
 };
 

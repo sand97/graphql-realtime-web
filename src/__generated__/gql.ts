@@ -24,6 +24,11 @@ const documents = {
     "\n  mutation createMedicament(\n    $name: String!\n    $description: String!\n    $price: Float!\n    $stock: Int!\n    $image: String!\n    $categoryId: ID!\n  ) {\n    createMedicament(\n      input: {\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n": types.CreateMedicamentDocument,
     "\n  mutation updateMedicament(\n    $id: ID!\n    $name: String\n    $description: String\n    $price: Float\n    $stock: Int\n    $image: String\n    $categoryId: ID\n  ) {\n    updateMedicament(\n      input: {\n        id: $id\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n": types.UpdateMedicamentDocument,
     "\n  mutation deleteMedicament($id: ID!) {\n    deleteMedicament(id: $id) {\n      id\n    }\n  }\n": types.DeleteMedicamentDocument,
+    "\n  fragment UserFields on User {\n    name\n    surname\n    email\n    phone\n  }\n": types.UserFieldsFragmentDoc,
+    "\n  query users($page: Int!, $limit: Int!, $keyword: String) {\n    users(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      count\n      users {\n        id\n        ...UserFields\n      }\n    }\n  }\n": types.UsersDocument,
+    "\n  mutation createUser($payload: CreateOrUpdateUserInput!) {\n    createUser(createUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n": types.CreateUserDocument,
+    "\n  mutation updateUser(\n    $userId: String!,\n    $payload: UpdateUserInput!) {\n    updateUser(userId: $userId, updateUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n": types.UpdateUserDocument,
+    "\n  mutation removeUser($id: String!) {\n    removeUser(id: $id) {\n      id\n    }\n  }\n": types.RemoveUserDocument,
 };
 
 /**
@@ -84,6 +89,26 @@ export function gql(source: "\n  mutation updateMedicament(\n    $id: ID!\n    $
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation deleteMedicament($id: ID!) {\n    deleteMedicament(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation deleteMedicament($id: ID!) {\n    deleteMedicament(id: $id) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment UserFields on User {\n    name\n    surname\n    email\n    phone\n  }\n"): (typeof documents)["\n  fragment UserFields on User {\n    name\n    surname\n    email\n    phone\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query users($page: Int!, $limit: Int!, $keyword: String) {\n    users(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      count\n      users {\n        id\n        ...UserFields\n      }\n    }\n  }\n"): (typeof documents)["\n  query users($page: Int!, $limit: Int!, $keyword: String) {\n    users(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      count\n      users {\n        id\n        ...UserFields\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation createUser($payload: CreateOrUpdateUserInput!) {\n    createUser(createUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  mutation createUser($payload: CreateOrUpdateUserInput!) {\n    createUser(createUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation updateUser(\n    $userId: String!,\n    $payload: UpdateUserInput!) {\n    updateUser(userId: $userId, updateUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  mutation updateUser(\n    $userId: String!,\n    $payload: UpdateUserInput!) {\n    updateUser(userId: $userId, updateUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation removeUser($id: String!) {\n    removeUser(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation removeUser($id: String!) {\n    removeUser(id: $id) {\n      id\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
