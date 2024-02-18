@@ -32,6 +32,11 @@ const en = {
     review_dialog_action_preview: 'Previous',
     email_form_invalid: 'Please enter a valid email address',
     register_field_code: 'Code',
+    navigation_config_bed: 'Beds',
+    navigation_config_users: 'Users',
+    navigation_config_equipments: 'Equipments',
+    user_role_ADMIN: "Administrator",
+    user_role_CLIENT: "Patient",
   },
 };
 

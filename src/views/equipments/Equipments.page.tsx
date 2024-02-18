@@ -1,23 +1,21 @@
 // @flow
 import * as React from 'react';
-import {useState} from 'react';
-import {User} from '../../__generated__/graphql';
-import {useTranslation} from 'react-i18next';
-import {Page} from '../../components';
-import {Alert, Box, Button, Container, Grid, InputAdornment, LinearProgress, Stack, TextField,} from '@mui/material';
-import {useDebounce} from '../../hooks/useDebounce';
-import {DataGrid, GridColDef} from '@mui/x-data-grid';
-import DialogConfirm from 'components/DialogConfirm';
-import {useDeleteUser, useUsers} from "./users_hooks";
-import AddOrUpdateUser from "./components/AddOrUpdateUser";
-import {useHistory} from 'react-router'
-type Props = {};
-const UsersPage = (props: Props) => {
-    const [dialog, setDialog] = useState<
-        { initialValue?: User } | undefined
-    >();
-    const history = useHistory();
+import {useState} from "react";
+import {Equipment} from "../../__generated__/graphql";
+import {useTranslation} from "react-i18next";
+import {useDebounce} from "../../hooks/useDebounce";
+import {DataGrid, GridColDef} from "@mui/x-data-grid";
+import {Page} from "../../components";
+import DialogConfirm from "../../components/DialogConfirm";
+import {Alert, Box, Button, Container, Grid, InputAdornment, TextField} from "@mui/material";
+import {useDeleteEquipment, useEquipments} from "./equipments_hooks";
+import AddOrUpdateEquipment from "./components/AddOrUpdateEquipment";
 
+
+const EquipmentsPage = () => {
+    const [dialog, setDialog] = useState<
+        { initialValue?: Equipment } | undefined
+    >();
     const {t} = useTranslation();
     const [keyword, setKeyword] = useState('');
     const debouncedKeyword = useDebounce(keyword, 500);
@@ -25,79 +23,44 @@ const UsersPage = (props: Props) => {
         pageSize: 10,
         page: 0,
     });
-    const [userToDelete, setUserToDelete] = useState<
-        User | undefined
+    const [equipmentToDelete, setEquipmentToDelete] = useState<
+        Equipment | undefined
     >();
-    const [deleteMutation, {loading: loadingDeleteUser}] =
-        useDeleteUser();
+    const [deleteMutation, {loading: loadingDeleteEquipment}] =
+        useDeleteEquipment();
 
-    const {data, error, refetch, loading} = useUsers(
+    const {data, error, refetch, loading} = useEquipments(
         paginationModel.page + 1,
         paginationModel.pageSize,
         debouncedKeyword,
     );
 
-
     const columns: GridColDef[] = [
-        {field: 'name', headerName: t('user_name'), width: 150},
-        {field: 'surname', headerName: t('user_surname'), width: 200},
-        {field: 'email', headerName: t('user_email'), width: 200},
-        {
-            field: 'role', headerName: t('user_page_role'),
-            renderCell: (params) => t(`user_role_${params.row.role}`),
-            width: 200,
-        },
-        {
-            field: 'actions',
-            headerName: t('global_actions'),
-            width: 300,
-            renderCell: (params) => {
-                return (
-                    <Stack spacing={2} direction={'row'}>
-                        <Button
-                            onClick={() =>
-                                setDialog({initialValue: params.row as User})
-                            }
-                            variant={'contained'}
-                            size={'small'}
-                        >
-                            {t('global_label_update')}
-                        </Button>
-                        <Button
-                            onClick={() => setUserToDelete(params.row as User)}
-                            variant={'contained'}
-                            size={'small'}
-                            color={'error'}
-                            sx={{ml: 1}}
-                        >
-                            {t('global_dialog_delete')}
-                        </Button>
-                    </Stack>
-                );
-            },
-        },
+        {field: 'id', headerName: 'ID', width: 150},
+        {field: 'name', headerName: t('equipment_name'), width: 200},
+        {field: 'serialNumber', headerName: t('equipment_description'), width: 200},
     ];
 
     return (
         <Page title={t('')}>
             <DialogConfirm
-                open={!!userToDelete}
-                loading={loadingDeleteUser}
+                open={!!equipmentToDelete}
+                loading={loadingDeleteEquipment}
                 title={t('global_dialog_conf_title')}
                 text={t('delete_user_conf', {
-                    name: userToDelete?.name,
+                    name: equipmentToDelete?.name,
                 })}
-                onConfirmDialogClose={() => setUserToDelete(undefined)}
+                onConfirmDialogClose={() => setEquipmentToDelete(undefined)}
                 onYesClick={() => {
-                    if (userToDelete)
+                    if (equipmentToDelete)
                         void deleteMutation({
-                            variables: {id: userToDelete.id},
-                            onCompleted: () => setUserToDelete(undefined),
+                            variables: { id: equipmentToDelete.id},
+                            onCompleted: () => setEquipmentToDelete(undefined),
                         });
                 }}
             />
             <Container maxWidth={'lg'} sx={{pt: 2}}>
-                <AddOrUpdateUser
+                <AddOrUpdateEquipment
                     refetch={refetch}
                     initialValue={dialog?.initialValue}
                     open={!!dialog}
@@ -121,7 +84,7 @@ const UsersPage = (props: Props) => {
                     </Alert>
                 )}
 
-                {data && data.users?.count === 0 && (
+                {data && data.equipments?.count === 0 && (
                     <Alert severity={'info'}>{t('medicaments_empty')}</Alert>
                 )}
                 <Grid
@@ -157,25 +120,18 @@ const UsersPage = (props: Props) => {
                             onClick={() => setDialog({})}
                             startIcon={<img src="/icons/Add.svg" alt=""/>}
                         >
-                            {t('user_add_title')}
+                            {t('equipment_add_title')}
                         </Button>
                     </Grid>
                 </Grid>
                 <Box my={2}>
-                    {
-                        loading &&
-                        <LinearProgress/>
-                    }
                     <DataGrid
-                        onCellClick={params => {
-                            history.push(`/users/${params.row.id}`);
-                        }}
                         loading={loading}
                         paginationModel={paginationModel}
                         onPaginationModelChange={setPaginationModel}
                         pageSizeOptions={[10, 15, 20]}
-                        rowCount={data?.users?.count ?? 0}
-                        rows={data?.users?.users ?? []}
+                        rowCount={data?.equipments?.count ?? 0}
+                        rows={data?.equipments?.data ?? []}
                         columns={columns}
                     />
                 </Box>
@@ -184,4 +140,4 @@ const UsersPage = (props: Props) => {
     );
 };
 
-export default UsersPage;
+export default EquipmentsPage

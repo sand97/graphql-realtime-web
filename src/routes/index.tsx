@@ -42,21 +42,30 @@ const routesConfig: RouteConfig[] = [
         component: lazy(() => import('views/errors/error.page')),
       },
       {
+        path: '/beds',
+        exact: true,
+        component: lazy(() => import('views/bed/Bed.page')),
+      },
+      {
+        path: '/equipments',
+        exact: true,
+        component: lazy(() => import('views/equipments/Equipments.page')),
+      },
+      {
         path: '/',
-        exact: true,
-        component: lazy(() => import('views/medicaments/Medicine.page')),
-      },
-      {
-        path: '/categories',
-        exact: true,
-        component: lazy(() => import('views/categories/Categories.page')),
-      },
-      {
-        path: '/users',
         exact: true,
         component: lazy(() => import('views/users/Users.page')),
       },
-
+      {
+        path: '/users/:userId',
+        exact: true,
+        component: lazy(() => import('views/users/User.page')),
+      },
+      {
+        path: '/users/:userId/:hospitalisationId',
+        exact: true,
+        component: lazy(() => import('views/users/Hospitalisation.page')),
+      },
       {
         path: '*',
         component: () => <Redirect to="/app/error-404" />,

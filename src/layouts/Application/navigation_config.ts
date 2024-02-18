@@ -1,8 +1,6 @@
 import React from 'react';
-import { ReactComponent as SupervisionIcon } from 'assets/Bag.svg';
 import { ReactComponent as StoreIcon } from 'assets/Home.svg';
 import { ReactComponent as CategoryIcon } from 'assets/Graph.svg';
-import { ReactComponent as CitiesIcon } from 'assets/Location.svg';
 import { ReactComponent as UsersIcon } from 'assets/Users.svg';
 
 interface Menu {
@@ -14,24 +12,19 @@ interface Menu {
 
 const navigation_config: Menu[] = [
   {
-    title: 'navigation_config_store',
+    title: 'navigation_config_users',
     href: '/',
+    icon: UsersIcon,
+  },
+  {
+    title: 'navigation_config_bed',
+    href: '/beds',
     icon: StoreIcon,
   },
-  // {
-  //   title: 'navigation_config_orders',
-  //   href: '/orders',
-  //   icon: SupervisionIcon,
-  // },
   {
-    title: 'navigation_config_categories',
-    href: '/categories',
+    title: 'navigation_config_equipments',
+    href: '/equipments',
     icon: CategoryIcon,
-  },
-  {
-    title: 'navigation_config_users',
-    href: '/users',
-    icon: UsersIcon,
   },
 ];
 

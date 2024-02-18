@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import { apolloClient } from './services/graphql';
 import { ApolloProvider } from '@apollo/client';

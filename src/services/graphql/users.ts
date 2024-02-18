@@ -1,12 +1,13 @@
 import { gql } from '__generated__/gql';
 
 gql(/* GraphQL */ `
-  fragment UserFields on User {
-    name
-    surname
-    email
-    phone
-  }
+    fragment UserFields on User {
+        name
+        surname
+        email
+        phone
+        role
+    }
 `);
 
 export const USERS_QUERY = gql(/* GraphQL */ `
@@ -16,6 +17,22 @@ export const USERS_QUERY = gql(/* GraphQL */ `
       users {
         id
         ...UserFields
+      }
+    }
+  }
+`);
+
+export const USER_HOSPITALISATION_QUERY = gql(/* GraphQL */ `
+  query hospitalisations($payload: FetchHospitalisationInput!) {
+    hospitalisations(payload: $payload) {
+      count
+      data {
+        id
+        createdAt
+        endAt
+        bed {
+          number
+        }
       }
     }
   }

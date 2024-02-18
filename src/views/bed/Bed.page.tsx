@@ -1,103 +1,66 @@
 // @flow
 import * as React from 'react';
-import {useState} from 'react';
-import {User} from '../../__generated__/graphql';
-import {useTranslation} from 'react-i18next';
-import {Page} from '../../components';
-import {Alert, Box, Button, Container, Grid, InputAdornment, LinearProgress, Stack, TextField,} from '@mui/material';
-import {useDebounce} from '../../hooks/useDebounce';
-import {DataGrid, GridColDef} from '@mui/x-data-grid';
-import DialogConfirm from 'components/DialogConfirm';
-import {useDeleteUser, useUsers} from "./users_hooks";
-import AddOrUpdateUser from "./components/AddOrUpdateUser";
-import {useHistory} from 'react-router'
-type Props = {};
-const UsersPage = (props: Props) => {
-    const [dialog, setDialog] = useState<
-        { initialValue?: User } | undefined
-    >();
-    const history = useHistory();
+import {useState} from "react";
+import {Bed} from "../../__generated__/graphql";
+import {useTranslation} from "react-i18next";
+import {useDebounce} from "../../hooks/useDebounce";
+import {DataGrid, GridColDef} from "@mui/x-data-grid";
+import {Alert, Box, Button, Container, Grid, InputAdornment, LinearProgress, Stack, TextField} from "@mui/material";
+import {Page} from "../../components";
+import DialogConfirm from "../../components/DialogConfirm";
+import AddOrUpdateBedDialog from "./components/AddOrUpdateBed";
+import {useBeds, useDeleteBed} from "./beds_hooks";
 
-    const {t} = useTranslation();
+const BedPage = () => {
+    const [dialog, setDialog] = useState<
+        { initialValue?: Bed } | undefined
+    >();
+    const {t, i18n: {language}} = useTranslation();
+
     const [keyword, setKeyword] = useState('');
     const debouncedKeyword = useDebounce(keyword, 500);
     const [paginationModel, setPaginationModel] = React.useState({
         pageSize: 10,
         page: 0,
     });
-    const [userToDelete, setUserToDelete] = useState<
-        User | undefined
+    const [bedToDelete, setBedToDelete] = useState<
+        Bed | undefined
     >();
-    const [deleteMutation, {loading: loadingDeleteUser}] =
-        useDeleteUser();
+    const [deleteMutation, {loading: loadingDeleteBed}] =
+        useDeleteBed();
 
-    const {data, error, refetch, loading} = useUsers(
+    const {data, error, refetch, loading} = useBeds(
         paginationModel.page + 1,
         paginationModel.pageSize,
         debouncedKeyword,
     );
 
-
     const columns: GridColDef[] = [
-        {field: 'name', headerName: t('user_name'), width: 150},
-        {field: 'surname', headerName: t('user_surname'), width: 200},
-        {field: 'email', headerName: t('user_email'), width: 200},
-        {
-            field: 'role', headerName: t('user_page_role'),
-            renderCell: (params) => t(`user_role_${params.row.role}`),
-            width: 200,
-        },
-        {
-            field: 'actions',
-            headerName: t('global_actions'),
-            width: 300,
-            renderCell: (params) => {
-                return (
-                    <Stack spacing={2} direction={'row'}>
-                        <Button
-                            onClick={() =>
-                                setDialog({initialValue: params.row as User})
-                            }
-                            variant={'contained'}
-                            size={'small'}
-                        >
-                            {t('global_label_update')}
-                        </Button>
-                        <Button
-                            onClick={() => setUserToDelete(params.row as User)}
-                            variant={'contained'}
-                            size={'small'}
-                            color={'error'}
-                            sx={{ml: 1}}
-                        >
-                            {t('global_dialog_delete')}
-                        </Button>
-                    </Stack>
-                );
-            },
-        },
+        {field: 'id', headerName: 'ID', width: 150},
+        {field: 'level', headerName: t('bed_level'), width: 200},
+        {field: 'number', headerName: t('bed_number'), width: 200},
     ];
 
     return (
         <Page title={t('')}>
             <DialogConfirm
-                open={!!userToDelete}
-                loading={loadingDeleteUser}
+                open={!!bedToDelete}
+                loading={loadingDeleteBed}
                 title={t('global_dialog_conf_title')}
-                text={t('delete_user_conf', {
-                    name: userToDelete?.name,
+                text={t('delete_bed_conf', {
+                    name: bedToDelete?.number,
                 })}
-                onConfirmDialogClose={() => setUserToDelete(undefined)}
+                onConfirmDialogClose={() => setBedToDelete(undefined)}
                 onYesClick={() => {
-                    if (userToDelete)
+                    if (bedToDelete)
                         void deleteMutation({
-                            variables: {id: userToDelete.id},
-                            onCompleted: () => setUserToDelete(undefined),
+                            variables: { id: bedToDelete.id},
+                            onCompleted: () => setBedToDelete(undefined),
                         });
                 }}
             />
             <Container maxWidth={'lg'} sx={{pt: 2}}>
-                <AddOrUpdateUser
+                <AddOrUpdateBedDialog
                     refetch={refetch}
                     initialValue={dialog?.initialValue}
                     open={!!dialog}
@@ -121,7 +84,7 @@ const UsersPage = (props: Props) => {
                     </Alert>
                 )}
 
-                {data && data.users?.count === 0 && (
+                {data && data.beds?.count === 0 && (
                     <Alert severity={'info'}>{t('medicaments_empty')}</Alert>
                 )}
                 <Grid
@@ -157,7 +120,7 @@ const UsersPage = (props: Props) => {
                             onClick={() => setDialog({})}
                             startIcon={<img src="/icons/Add.svg" alt=""/>}
                         >
-                            {t('user_add_title')}
+                            {t('bed_add_title')}
                         </Button>
                     </Grid>
                 </Grid>
@@ -167,15 +130,12 @@ const UsersPage = (props: Props) => {
                         <LinearProgress/>
                     }
                     <DataGrid
-                        onCellClick={params => {
-                            history.push(`/users/${params.row.id}`);
-                        }}
                         loading={loading}
                         paginationModel={paginationModel}
                         onPaginationModelChange={setPaginationModel}
                         pageSizeOptions={[10, 15, 20]}
-                        rowCount={data?.users?.count ?? 0}
-                        rows={data?.users?.users ?? []}
+                        rowCount={data?.beds?.count ?? 0}
+                        rows={data?.beds?.data ?? []}
                         columns={columns}
                     />
                 </Box>
@@ -184,4 +144,4 @@ const UsersPage = (props: Props) => {
     );
 };
 
-export default UsersPage;
+export default BedPage

@@ -2,32 +2,34 @@ import {useMutation, useQuery} from '@apollo/client';
 import {useSnackbar} from 'notistack';
 import {useTranslation} from 'react-i18next';
 import {
-  CREATE_USER_MUTATION,
-  DELETE_USER_MUTATION,
-  UPDATE_USER_MUTATION,
-  USERS_QUERY
-} from "../../services/graphql/users";
+  CREATE_BED_MUTATION,
+  DELETE_BED_MUTATION,
+  UPDATE_BED_MUTATION,
+  BEDS_QUERY
+} from "../../services/graphql/beds";
 
-export const useUsers = (
+export const useBeds = (
   page: number,
   limit: number,
   keyword?: string,
 ) => {
-  return useQuery(USERS_QUERY, {
+  return useQuery(BEDS_QUERY, {
     variables: {
-      page,
-      limit,
-      keyword,
+      payload: {
+        page,
+        limit,
+        keyword,
+      }
     },
   });
 };
 
 
-export const useCreateUser = () => {
+export const useCreateBed = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
-  return useMutation(CREATE_USER_MUTATION, {
+  return useMutation(CREATE_BED_MUTATION, {
     fetchPolicy: 'no-cache',
     onError: (err) => {
       enqueueSnackbar(
@@ -40,12 +42,12 @@ export const useCreateUser = () => {
   })
 };
 
-export const useUpdateUser = () => {
+export const useUpdateBed = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
 
-  return useMutation(UPDATE_USER_MUTATION, {
+  return useMutation(UPDATE_BED_MUTATION, {
     fetchPolicy: 'no-cache',
     onError: (err) => {
       enqueueSnackbar(
@@ -58,11 +60,11 @@ export const useUpdateUser = () => {
   })
 };
 
-export const useDeleteUser = () => {
+export const useDeleteBed = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
-  return useMutation(DELETE_USER_MUTATION, {
+  return useMutation(DELETE_BED_MUTATION, {
     fetchPolicy: 'no-cache',
     onError: (err) => {
       enqueueSnackbar(

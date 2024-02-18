@@ -2,32 +2,34 @@ import {useMutation, useQuery} from '@apollo/client';
 import {useSnackbar} from 'notistack';
 import {useTranslation} from 'react-i18next';
 import {
-  CREATE_USER_MUTATION,
-  DELETE_USER_MUTATION,
-  UPDATE_USER_MUTATION,
-  USERS_QUERY
-} from "../../services/graphql/users";
+  CREATE_EQUIPMENT_MUTATION,
+  DELETE_EQUIPMENT_MUTATION,
+  UPDATE_EQUIPMENT_MUTATION,
+  EQUIPMENTS_QUERY
+} from "../../services/graphql/equipments";
 
-export const useUsers = (
+export const useEquipments = (
   page: number,
   limit: number,
   keyword?: string,
 ) => {
-  return useQuery(USERS_QUERY, {
+  return useQuery(EQUIPMENTS_QUERY, {
     variables: {
-      page,
-      limit,
-      keyword,
+      payload: {
+        page,
+        limit,
+        keyword,
+      }
     },
   });
 };
 
 
-export const useCreateUser = () => {
+export const useCreateEquipment = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
-  return useMutation(CREATE_USER_MUTATION, {
+  return useMutation(CREATE_EQUIPMENT_MUTATION, {
     fetchPolicy: 'no-cache',
     onError: (err) => {
       enqueueSnackbar(
@@ -40,12 +42,12 @@ export const useCreateUser = () => {
   })
 };
 
-export const useUpdateUser = () => {
+export const useUpdateEquipment = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
 
-  return useMutation(UPDATE_USER_MUTATION, {
+  return useMutation(UPDATE_EQUIPMENT_MUTATION, {
     fetchPolicy: 'no-cache',
     onError: (err) => {
       enqueueSnackbar(
@@ -58,11 +60,11 @@ export const useUpdateUser = () => {
   })
 };
 
-export const useDeleteUser = () => {
+export const useDeleteEquipment = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
-  return useMutation(DELETE_USER_MUTATION, {
+  return useMutation(DELETE_EQUIPMENT_MUTATION, {
     fetchPolicy: 'no-cache',
     onError: (err) => {
       enqueueSnackbar(

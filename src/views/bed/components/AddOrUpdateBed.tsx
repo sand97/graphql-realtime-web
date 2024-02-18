@@ -7,40 +7,29 @@ import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 import {FormikTextField} from 'components/fields/FormikTextField';
 import useResponsive from '../../../hooks/useResponsive';
-import {User} from '__generated__/graphql';
-import {useCreateUser, useUpdateUser} from "../users_hooks";
-import FormikAutocomplete from "../../../components/fields/FormikAutocomplete";
+import {Bed} from '__generated__/graphql';
+import {GlobalDialog} from "../../users/components/AddOrUpdateUser";
+import {useCreateBed, useUpdateBed} from "../beds_hooks";
 
-export interface GlobalDialog {
-    open: boolean
-    onClose: () => void
-    refetch?: () => void
-}
 
 interface AddOrUpdateCategoryProps {
-    initialValue?: User;
+    initialValue?: Bed;
 }
 
-const AddOrUpdateMedicamentDialog = (
+const AddOrUpdateBedDialog = (
     props: AddOrUpdateCategoryProps & GlobalDialog,
 ) => {
     const submitButton = useRef<HTMLButtonElement>(null);
     const {t} = useTranslation();
     const mobile = useResponsive('down', 'sm');
 
-    const [addMutation, {loading: loadingAdd}] = useCreateUser();
-    const [updateMutation, {loading: loadingUpdate}] = useUpdateUser();
+    const [addMutation, {loading: loadingAdd}] = useCreateBed();
+    const [updateMutation, {loading: loadingUpdate}] = useUpdateBed();
     const loading = loadingAdd || loadingUpdate;
 
     const validations = {
-        email: Yup.string()
-            .email(t('email_form_invalid'))
-            .required(t('global_field_require')),
-        ...(!props.initialValue ? {
-            password: Yup.string().required(t('global_field_require')),
-        } : {}),
-        name: Yup.string().required(t('global_field_require')),
-        surname: Yup.string().required(t('global_field_require')),
+        level: Yup.number().required(t('global_field_require')),
+        number: Yup.number().required(t('global_field_require')),
     };
 
     const onCompleted = () => {
@@ -50,45 +39,26 @@ const AddOrUpdateMedicamentDialog = (
     }
 
     const handleSubmit = (values: any) => {
-        let payload = {
+        let input = {
             ...values,
-            role: values.role.id,
         };
-        delete payload.__typename
-        delete payload.id
-        if (typeof props.initialValue?.id !== 'undefined') {
+        delete input.__typename
+        if (typeof input.id !== 'undefined') {
             updateMutation({
                 variables: {
-                    payload,
-                    userId: props.initialValue?.id,
+                    input,
                 },
                 onCompleted,
             });
         } else {
-            addMutation({variables: {payload}, onCompleted});
+            addMutation({variables: {input}, onCompleted});
         }
     };
 
 
-    const initialValues: any = props.initialValue
-        ? {
-            ...props.initialValue,
-            role: {
-                label: t(`user_role_${props.initialValue?.role}`),
-                id: props.initialValue?.role,
-            },
-        }
-        : {
-            name: '',
-            surname: '',
-            email: '',
-            phone: '',
-            role: {
-                label: t(`user_role_CLIENT`),
-                id: 'CLIENT',
-            },
-            password: '',
-        };
+    const initialValues: any = {
+        ...(props.initialValue ?? {})
+    }
 
     return (
         <React.Fragment>
@@ -102,8 +72,8 @@ const AddOrUpdateMedicamentDialog = (
                 <DialogTitle>
                     {t(
                         props.initialValue
-                            ? 'user_update_title'
-                            : 'user_add_title',
+                            ? 'bed_update_title'
+                            : 'bed_add_title',
                     )}
                 </DialogTitle>
                 <DialogContent dividers>
@@ -126,42 +96,15 @@ const AddOrUpdateMedicamentDialog = (
                                 <Grid container spacing={2}>
                                     <FormikTextField
                                         xs={12}
-                                        label={t('user_name')}
-                                        name={'name'}
+                                        type={'number'}
+                                        label={t('bed_level')}
+                                        name={'level'}
                                     />
                                     <FormikTextField
                                         xs={12}
-                                        label={t('user_surname')}
-                                        name={'surname'}
-                                    />
-                                    <FormikTextField
-                                        xs={12}
-                                        label={t('user_email')}
-                                        name={'email'}
-                                    />
-                                    <FormikTextField
-                                        xs={12}
-                                        label={t('user_phone')}
-                                        name={'phone'}
-                                    />
-                                    <FormikTextField
-                                        xs={12}
-                                        label={t('user_password')}
-                                        name={'password'}
-                                    />
-
-                                    <FormikAutocomplete
-                                        options={['ADMIN', 'CLIENT'].map((id) => ({
-                                            label: t(`user_role_${id}`),
-                                            id,
-                                        }))}
-                                        label={t('user_page_role')}
-                                        getOptionLabel={(option) => option.label}
-                                        isOptionEqualToValue={(option, value) =>
-                                            option.id === value?.id
-                                        }
-                                        xs={12}
-                                        name={'role'}
+                                        type={'number'}
+                                        label={t('bed_number')}
+                                        name={'number'}
                                     />
 
                                     <button
@@ -199,4 +142,4 @@ const AddOrUpdateMedicamentDialog = (
     );
 };
 
-export default AddOrUpdateMedicamentDialog;
+export default AddOrUpdateBedDialog;

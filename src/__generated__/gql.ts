@@ -14,18 +14,22 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query login($email: String!, $password: String!) {\n    login(loginInput: { email: $email, password: $password }) {\n      Authorization\n      user {\n        id\n        name\n        surname\n        email\n        avatar\n      }\n    }\n  }\n": types.LoginDocument,
-    "\n  fragment CategoryFields on Category {\n    name\n    description\n    createdAt\n    updatedAt\n  }\n": types.CategoryFieldsFragmentDoc,
-    "\n  query categories {\n    categories {\n      id\n      ...CategoryFields\n    }\n  }\n": types.CategoriesDocument,
-    "\n  mutation createCategory($name: String!, $description: String!) {\n    createCategory(input: { name: $name, description: $description }) {\n      id\n      ...CategoryFields\n    }\n  }\n": types.CreateCategoryDocument,
-    "\n  mutation updateCategory($id: ID!, $name: String, $description: String) {\n    updateCategory(input: { id: $id, name: $name, description: $description }) {\n      id\n      ...CategoryFields\n    }\n  }\n": types.UpdateCategoryDocument,
-    "\n  mutation deleteCategory($id: ID!) {\n    deleteCategory(id: $id) {\n      id\n    }\n  }\n": types.DeleteCategoryDocument,
-    "\n  fragment MedicamentFields on Medicament {\n    id\n    name\n    image\n    price\n    stock\n    description\n    category {\n      name\n      description\n    }\n  }\n": types.MedicamentFieldsFragmentDoc,
-    "\n  query medicaments($page: Int!, $limit: Int!, $keyword: String) {\n    medicaments(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      medicaments {\n        id\n        ...MedicamentFields\n      }\n      count\n    }\n  }\n": types.MedicamentsDocument,
-    "\n  mutation createMedicament(\n    $name: String!\n    $description: String!\n    $price: Float!\n    $stock: Int!\n    $image: String!\n    $categoryId: ID!\n  ) {\n    createMedicament(\n      input: {\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n": types.CreateMedicamentDocument,
-    "\n  mutation updateMedicament(\n    $id: ID!\n    $name: String\n    $description: String\n    $price: Float\n    $stock: Int\n    $image: String\n    $categoryId: ID\n  ) {\n    updateMedicament(\n      input: {\n        id: $id\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n": types.UpdateMedicamentDocument,
-    "\n  mutation deleteMedicament($id: ID!) {\n    deleteMedicament(id: $id) {\n      id\n    }\n  }\n": types.DeleteMedicamentDocument,
-    "\n  fragment UserFields on User {\n    name\n    surname\n    email\n    phone\n  }\n": types.UserFieldsFragmentDoc,
+    "\n  fragment BedFields on Bed {\n    id\n    level\n    number\n    updatedAt\n    createdAt\n  }\n": types.BedFieldsFragmentDoc,
+    "\n  query beds($payload: FetchBedsInput!) {\n    beds(payload: $payload) {\n      data {\n        id\n        ...BedFields\n      }\n      count\n    }\n  }\n": types.BedsDocument,
+    "\n  mutation createBed($input: NewBedInput!) {\n    createBed(\n      input: $input\n    ) {\n      id\n      ...BedFields\n    }\n  }\n": types.CreateBedDocument,
+    "\n  mutation updateBed($input: UpdateBedInput!) {\n    updateBed(\n      input: $input \n    ) {\n      id\n      ...BedFields\n    }\n  }\n": types.UpdateBedDocument,
+    "\n  mutation deleteBed($id: ID!) {\n    deleteBed(id: $id) {\n      id\n    }\n  }\n": types.DeleteBedDocument,
+    "\n  fragment EquipmentFields on Equipment {\n    id\n    name\n    description\n    serialNumber\n    updatedAt\n    createdAt\n  }\n": types.EquipmentFieldsFragmentDoc,
+    "\n  query equipments($payload: FetchEquipmentsInput!) {\n    equipments(payload: $payload) {\n      data {\n        id\n        ...EquipmentFields\n      }\n      count\n    }\n  }\n": types.EquipmentsDocument,
+    "\n  mutation createEquipment($input: NewEquipmentInput!) {\n    createEquipment(\n      input: $input\n    ) {\n      id\n      ...EquipmentFields\n    }\n  }\n": types.CreateEquipmentDocument,
+    "\n  mutation updateEquipment($input: UpdateEquipmentInput!) {\n    updateEquipment(\n      input: $input \n    ) {\n      id\n      ...EquipmentFields\n    }\n  }\n": types.UpdateEquipmentDocument,
+    "\n  mutation deleteEquipment($id: ID!) {\n    deleteEquipment(id: $id) {\n      id\n    }\n  }\n": types.DeleteEquipmentDocument,
+    "\n    fragment ObservationFields on Observation {\n        id\n        value\n        hospitalisationId\n        equipmentId\n        equipment {\n            id\n            name\n        }\n        createdAt\n    }\n": types.ObservationFieldsFragmentDoc,
+    "\n    query lastObservations($payload: LastObservationInput!) {\n        lastObservations(payload: $payload) {\n            data {\n                id\n                ...ObservationFields\n            }\n        }\n    }\n": types.LastObservationsDocument,
+    "\n    subscription observationAdded($hospitalisationId: ID!) {\n        observationAdded(hospitalisationId:$hospitalisationId) {\n            id\n            ...ObservationFields\n        }\n    }\n": types.ObservationAddedDocument,
+    "\n    fragment UserFields on User {\n        name\n        surname\n        email\n        phone\n        role\n    }\n": types.UserFieldsFragmentDoc,
     "\n  query users($page: Int!, $limit: Int!, $keyword: String) {\n    users(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      count\n      users {\n        id\n        ...UserFields\n      }\n    }\n  }\n": types.UsersDocument,
+    "\n  query hospitalisations($payload: FetchHospitalisationInput!) {\n    hospitalisations(payload: $payload) {\n      count\n      data {\n        id\n        createdAt\n        endAt\n        bed {\n          number\n        }\n      }\n    }\n  }\n": types.HospitalisationsDocument,
     "\n  mutation createUser($payload: CreateOrUpdateUserInput!) {\n    createUser(createUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n": types.CreateUserDocument,
     "\n  mutation updateUser(\n    $userId: String!,\n    $payload: UpdateUserInput!) {\n    updateUser(userId: $userId, updateUserInput: $payload) {\n      id\n      ...UserFields\n    }\n  }\n": types.UpdateUserDocument,
     "\n  mutation removeUser($id: String!) {\n    removeUser(id: $id) {\n      id\n    }\n  }\n": types.RemoveUserDocument,
@@ -52,51 +56,67 @@ export function gql(source: "\n  query login($email: String!, $password: String!
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment CategoryFields on Category {\n    name\n    description\n    createdAt\n    updatedAt\n  }\n"): (typeof documents)["\n  fragment CategoryFields on Category {\n    name\n    description\n    createdAt\n    updatedAt\n  }\n"];
+export function gql(source: "\n  fragment BedFields on Bed {\n    id\n    level\n    number\n    updatedAt\n    createdAt\n  }\n"): (typeof documents)["\n  fragment BedFields on Bed {\n    id\n    level\n    number\n    updatedAt\n    createdAt\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query categories {\n    categories {\n      id\n      ...CategoryFields\n    }\n  }\n"): (typeof documents)["\n  query categories {\n    categories {\n      id\n      ...CategoryFields\n    }\n  }\n"];
+export function gql(source: "\n  query beds($payload: FetchBedsInput!) {\n    beds(payload: $payload) {\n      data {\n        id\n        ...BedFields\n      }\n      count\n    }\n  }\n"): (typeof documents)["\n  query beds($payload: FetchBedsInput!) {\n    beds(payload: $payload) {\n      data {\n        id\n        ...BedFields\n      }\n      count\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation createCategory($name: String!, $description: String!) {\n    createCategory(input: { name: $name, description: $description }) {\n      id\n      ...CategoryFields\n    }\n  }\n"): (typeof documents)["\n  mutation createCategory($name: String!, $description: String!) {\n    createCategory(input: { name: $name, description: $description }) {\n      id\n      ...CategoryFields\n    }\n  }\n"];
+export function gql(source: "\n  mutation createBed($input: NewBedInput!) {\n    createBed(\n      input: $input\n    ) {\n      id\n      ...BedFields\n    }\n  }\n"): (typeof documents)["\n  mutation createBed($input: NewBedInput!) {\n    createBed(\n      input: $input\n    ) {\n      id\n      ...BedFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation updateCategory($id: ID!, $name: String, $description: String) {\n    updateCategory(input: { id: $id, name: $name, description: $description }) {\n      id\n      ...CategoryFields\n    }\n  }\n"): (typeof documents)["\n  mutation updateCategory($id: ID!, $name: String, $description: String) {\n    updateCategory(input: { id: $id, name: $name, description: $description }) {\n      id\n      ...CategoryFields\n    }\n  }\n"];
+export function gql(source: "\n  mutation updateBed($input: UpdateBedInput!) {\n    updateBed(\n      input: $input \n    ) {\n      id\n      ...BedFields\n    }\n  }\n"): (typeof documents)["\n  mutation updateBed($input: UpdateBedInput!) {\n    updateBed(\n      input: $input \n    ) {\n      id\n      ...BedFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation deleteCategory($id: ID!) {\n    deleteCategory(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation deleteCategory($id: ID!) {\n    deleteCategory(id: $id) {\n      id\n    }\n  }\n"];
+export function gql(source: "\n  mutation deleteBed($id: ID!) {\n    deleteBed(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation deleteBed($id: ID!) {\n    deleteBed(id: $id) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment MedicamentFields on Medicament {\n    id\n    name\n    image\n    price\n    stock\n    description\n    category {\n      name\n      description\n    }\n  }\n"): (typeof documents)["\n  fragment MedicamentFields on Medicament {\n    id\n    name\n    image\n    price\n    stock\n    description\n    category {\n      name\n      description\n    }\n  }\n"];
+export function gql(source: "\n  fragment EquipmentFields on Equipment {\n    id\n    name\n    description\n    serialNumber\n    updatedAt\n    createdAt\n  }\n"): (typeof documents)["\n  fragment EquipmentFields on Equipment {\n    id\n    name\n    description\n    serialNumber\n    updatedAt\n    createdAt\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query medicaments($page: Int!, $limit: Int!, $keyword: String) {\n    medicaments(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      medicaments {\n        id\n        ...MedicamentFields\n      }\n      count\n    }\n  }\n"): (typeof documents)["\n  query medicaments($page: Int!, $limit: Int!, $keyword: String) {\n    medicaments(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      medicaments {\n        id\n        ...MedicamentFields\n      }\n      count\n    }\n  }\n"];
+export function gql(source: "\n  query equipments($payload: FetchEquipmentsInput!) {\n    equipments(payload: $payload) {\n      data {\n        id\n        ...EquipmentFields\n      }\n      count\n    }\n  }\n"): (typeof documents)["\n  query equipments($payload: FetchEquipmentsInput!) {\n    equipments(payload: $payload) {\n      data {\n        id\n        ...EquipmentFields\n      }\n      count\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation createMedicament(\n    $name: String!\n    $description: String!\n    $price: Float!\n    $stock: Int!\n    $image: String!\n    $categoryId: ID!\n  ) {\n    createMedicament(\n      input: {\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n"): (typeof documents)["\n  mutation createMedicament(\n    $name: String!\n    $description: String!\n    $price: Float!\n    $stock: Int!\n    $image: String!\n    $categoryId: ID!\n  ) {\n    createMedicament(\n      input: {\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n"];
+export function gql(source: "\n  mutation createEquipment($input: NewEquipmentInput!) {\n    createEquipment(\n      input: $input\n    ) {\n      id\n      ...EquipmentFields\n    }\n  }\n"): (typeof documents)["\n  mutation createEquipment($input: NewEquipmentInput!) {\n    createEquipment(\n      input: $input\n    ) {\n      id\n      ...EquipmentFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation updateMedicament(\n    $id: ID!\n    $name: String\n    $description: String\n    $price: Float\n    $stock: Int\n    $image: String\n    $categoryId: ID\n  ) {\n    updateMedicament(\n      input: {\n        id: $id\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n"): (typeof documents)["\n  mutation updateMedicament(\n    $id: ID!\n    $name: String\n    $description: String\n    $price: Float\n    $stock: Int\n    $image: String\n    $categoryId: ID\n  ) {\n    updateMedicament(\n      input: {\n        id: $id\n        name: $name\n        description: $description\n        price: $price\n        stock: $stock\n        image: $image\n        categoryId: $categoryId\n      }\n    ) {\n      id\n      ...MedicamentFields\n    }\n  }\n"];
+export function gql(source: "\n  mutation updateEquipment($input: UpdateEquipmentInput!) {\n    updateEquipment(\n      input: $input \n    ) {\n      id\n      ...EquipmentFields\n    }\n  }\n"): (typeof documents)["\n  mutation updateEquipment($input: UpdateEquipmentInput!) {\n    updateEquipment(\n      input: $input \n    ) {\n      id\n      ...EquipmentFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation deleteMedicament($id: ID!) {\n    deleteMedicament(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation deleteMedicament($id: ID!) {\n    deleteMedicament(id: $id) {\n      id\n    }\n  }\n"];
+export function gql(source: "\n  mutation deleteEquipment($id: ID!) {\n    deleteEquipment(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation deleteEquipment($id: ID!) {\n    deleteEquipment(id: $id) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment UserFields on User {\n    name\n    surname\n    email\n    phone\n  }\n"): (typeof documents)["\n  fragment UserFields on User {\n    name\n    surname\n    email\n    phone\n  }\n"];
+export function gql(source: "\n    fragment ObservationFields on Observation {\n        id\n        value\n        hospitalisationId\n        equipmentId\n        equipment {\n            id\n            name\n        }\n        createdAt\n    }\n"): (typeof documents)["\n    fragment ObservationFields on Observation {\n        id\n        value\n        hospitalisationId\n        equipmentId\n        equipment {\n            id\n            name\n        }\n        createdAt\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    query lastObservations($payload: LastObservationInput!) {\n        lastObservations(payload: $payload) {\n            data {\n                id\n                ...ObservationFields\n            }\n        }\n    }\n"): (typeof documents)["\n    query lastObservations($payload: LastObservationInput!) {\n        lastObservations(payload: $payload) {\n            data {\n                id\n                ...ObservationFields\n            }\n        }\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    subscription observationAdded($hospitalisationId: ID!) {\n        observationAdded(hospitalisationId:$hospitalisationId) {\n            id\n            ...ObservationFields\n        }\n    }\n"): (typeof documents)["\n    subscription observationAdded($hospitalisationId: ID!) {\n        observationAdded(hospitalisationId:$hospitalisationId) {\n            id\n            ...ObservationFields\n        }\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    fragment UserFields on User {\n        name\n        surname\n        email\n        phone\n        role\n    }\n"): (typeof documents)["\n    fragment UserFields on User {\n        name\n        surname\n        email\n        phone\n        role\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query users($page: Int!, $limit: Int!, $keyword: String) {\n    users(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      count\n      users {\n        id\n        ...UserFields\n      }\n    }\n  }\n"): (typeof documents)["\n  query users($page: Int!, $limit: Int!, $keyword: String) {\n    users(payload: { limit: $limit, page: $page, keyword: $keyword }) {\n      count\n      users {\n        id\n        ...UserFields\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query hospitalisations($payload: FetchHospitalisationInput!) {\n    hospitalisations(payload: $payload) {\n      count\n      data {\n        id\n        createdAt\n        endAt\n        bed {\n          number\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query hospitalisations($payload: FetchHospitalisationInput!) {\n    hospitalisations(payload: $payload) {\n      count\n      data {\n        id\n        createdAt\n        endAt\n        bed {\n          number\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

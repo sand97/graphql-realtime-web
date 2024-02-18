@@ -14,9 +14,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <Router history={history}>
-    <React.StrictMode>
+    {/*<React.StrictMode>*/}
       <App />
-    </React.StrictMode>
+    {/*</React.StrictMode>*/}
   </Router>,
 );
 
